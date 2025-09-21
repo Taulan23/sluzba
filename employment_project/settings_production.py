@@ -15,6 +15,7 @@ ALLOWED_HOSTS = [
     '.railway.app',
     '.render.com',
     '.onrender.com',
+    'sluzba-1.onrender.com',
     '.herokuapp.com',
     '.pythonanywhere.com',
     '.vercel.app'
@@ -27,6 +28,13 @@ if os.environ.get('RAILWAY_STATIC_URL'):
 # Добавляем домен Render
 if os.environ.get('RENDER_EXTERNAL_HOSTNAME'):
     ALLOWED_HOSTS.append(os.environ.get('RENDER_EXTERNAL_HOSTNAME'))
+
+# Добавляем все поддомены Render
+if os.environ.get('RENDER'):
+    ALLOWED_HOSTS.extend([
+        '.onrender.com',
+        'sluzba-1.onrender.com'
+    ])
 
 # База данных для продакшена
 if os.environ.get('DATABASE_URL'):
