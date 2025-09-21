@@ -11,47 +11,15 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-!_z3=d*ar3a7b2$^%ipar
 # Временно включаем DEBUG для отладки
 if os.environ.get('RENDER'):
     DEBUG = True
+    print(f"RENDER environment detected. DEBUG={DEBUG}")
+    print(f"ALLOWED_HOSTS={ALLOWED_HOSTS}")
 
-# Разрешенные хосты
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '.railway.app',
-    '.render.com',
-    '.onrender.com',
-    '.herokuapp.com',
-    '.pythonanywhere.com',
-    '.vercel.app'
-]
+# Разрешенные хосты - упрощенная версия для Render
+ALLOWED_HOSTS = ['*']  # Разрешаем все домены для отладки
 
-# Для Render добавляем все возможные домены
+# Упрощенная логика для Render
 if os.environ.get('RENDER'):
-    ALLOWED_HOSTS.extend([
-        '*',  # Временно разрешаем все домены для отладки
-        '.onrender.com'
-    ])
-
-# Добавляем домен из переменной окружения
-if os.environ.get('RAILWAY_STATIC_URL'):
-    ALLOWED_HOSTS.append(os.environ.get('RAILWAY_STATIC_URL').replace('https://', ''))
-
-# Добавляем домен Render
-if os.environ.get('RENDER_EXTERNAL_HOSTNAME'):
-    ALLOWED_HOSTS.append(os.environ.get('RENDER_EXTERNAL_HOSTNAME'))
-
-# Добавляем все поддомены Render
-if os.environ.get('RENDER'):
-    ALLOWED_HOSTS.extend([
-        '.onrender.com',
-        'sluzba-1.onrender.com',
-        'sluzba-2.onrender.com',
-        'sluzba-3.onrender.com',
-        'sluzba-4.onrender.com',
-        'sluzba-5.onrender.com'
-    ])
-    
-    # Добавляем все возможные домены для отладки
-    ALLOWED_HOSTS.append('*')
+    ALLOWED_HOSTS = ['*']  # Разрешаем все домены
 
 # База данных для продакшена
 if os.environ.get('DATABASE_URL'):
