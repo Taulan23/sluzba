@@ -14,12 +14,29 @@ if os.environ.get('RENDER'):
     print(f"RENDER environment detected. DEBUG={DEBUG}")
     print(f"ALLOWED_HOSTS={ALLOWED_HOSTS}")
 
-# Разрешенные хосты - упрощенная версия для Render
-ALLOWED_HOSTS = ['*']  # Разрешаем все домены для отладки
+# Разрешенные хосты
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.railway.app',
+    '.render.com',
+    '.onrender.com',
+    '.herokuapp.com',
+    '.pythonanywhere.com',
+    '.vercel.app'
+]
 
-# Упрощенная логика для Render
+# Для Railway
+if os.environ.get('RAILWAY_STATIC_URL'):
+    ALLOWED_HOSTS.append(os.environ.get('RAILWAY_STATIC_URL').replace('https://', ''))
+
+# Для Render
 if os.environ.get('RENDER'):
-    ALLOWED_HOSTS = ['*']  # Разрешаем все домены
+    ALLOWED_HOSTS.extend(['*', '.onrender.com'])
+
+# Для Heroku
+if os.environ.get('HEROKU'):
+    ALLOWED_HOSTS.extend(['*', '.herokuapp.com'])
 
 # База данных для продакшена
 if os.environ.get('DATABASE_URL'):

@@ -9,5 +9,12 @@
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
+  },
+  "environments": {
+    "production": {
+      "variables": {
+        "DJANGO_SETTINGS_MODULE": "employment_project.settings_production"
+      }
+    }
   }
 }
