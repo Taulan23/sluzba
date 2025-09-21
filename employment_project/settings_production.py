@@ -35,7 +35,7 @@ if os.environ.get('DATABASE_URL'):
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 else:
-    # Fallback на SQLite для Railway
+    # Fallback на SQLite для Render
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

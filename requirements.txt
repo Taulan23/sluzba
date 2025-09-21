@@ -1,5 +1,5 @@
 Django==4.2.20
-Pillow==10.1.0
+Pillow>=10.4.0
 django-crispy-forms==2.1.0
 django-filter==23.5
 django-cleanup==8.0.0
