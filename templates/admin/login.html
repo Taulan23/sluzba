@@ -1,0 +1,162 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+<style>
+    body {
+        background: #f8f9fa;
+        font-family: 'Roboto', Arial, sans-serif;
+    }
+    
+    #header {
+        background: #1e3a8a;
+        color: white;
+    }
+    
+    .login {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        padding: 30px;
+        max-width: 450px;
+        margin: 100px auto;
+    }
+    
+    .form-row {
+        padding: 10px 0;
+    }
+    
+    .login .submit-row {
+        padding: 20px 0 0 0;
+        text-align: center;
+    }
+    
+    .login .submit-row input {
+        background: #1e3a8a;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+        width: 100%;
+    }
+    
+    .login .submit-row input:hover {
+        background: #0f172a;
+    }
+    
+    .login label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .login input[type=text], 
+    .login input[type=password] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+    
+    .login input[type=text]:focus, 
+    .login input[type=password]:focus {
+        border-color: #1e3a8a;
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(30, 58, 138, 0.25);
+    }
+    
+    .login .errorlist {
+        color: #dc3545;
+        padding: 0;
+        margin: 0 0 10px 0;
+        list-style: none;
+    }
+    
+    .login h1 {
+        font-size: 22px;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .login .help_text {
+        font-size: 13px;
+        color: #666;
+        margin-top: 5px;
+    }
+    
+    .back-to-site {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .back-to-site a {
+        color: #1e3a8a;
+        text-decoration: none;
+    }
+    
+    .back-to-site a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block bodyclass %}login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="login">
+    <h1>{% translate "Вход в панель администратора" %}</h1>
+    
+    {% if form.errors and not form.non_field_errors %}
+    <p class="errornote">
+        {% if form.errors.items|length == 1 %}{% translate "Пожалуйста, исправьте ошибку ниже." %}{% else %}{% translate "Пожалуйста, исправьте ошибки ниже." %}{% endif %}
+    </p>
+    {% endif %}
+    
+    {% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+    <p class="errornote">
+        {{ error }}
+    </p>
+    {% endfor %}
+    {% endif %}
+    
+    <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+        <div class="form-row">
+            {{ form.username.errors }}
+            <label for="id_username">{% translate 'Имя пользователя:' %}</label>
+            {{ form.username }}
+        </div>
+        <div class="form-row">
+            {{ form.password.errors }}
+            <label for="id_password">{% translate 'Пароль:' %}</label>
+            {{ form.password }}
+            <input type="hidden" name="next" value="{{ next }}">
+        </div>
+        
+        <div class="submit-row">
+            <input type="submit" value="{% translate 'Войти' %}">
+        </div>
+    </form>
+    
+    <div class="back-to-site">
+        <a href="/">Вернуться на сайт</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block sidebar %}{% endblock %} 

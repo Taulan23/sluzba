@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}Результаты поиска{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Результаты поиска</h1>
+    
+    <!-- Форма поиска -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" action="{% url 'core:search' %}">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Поиск по сайту" value="{{ request.GET.q }}">
+                    <button class="btn btn-primary" type="submit">Найти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    {% if request.GET.q %}
+        <div class="alert alert-info mb-4">
+            <h5>Результаты поиска по запросу: "{{ request.GET.q }}"</h5>
+        </div>
+    {% endif %}
+    
+    <!-- Результаты поиска -->
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs mb-4" id="searchTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="vacancies-tab" data-bs-toggle="tab" data-bs-target="#vacancies" type="button" role="tab">
+                        Вакансии ({{ vacancies|length }})
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="articles-tab" data-bs-toggle="tab" data-bs-target="#articles" type="button" role="tab">
+                        Статьи ({{ articles|length }})
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="news-tab" data-bs-toggle="tab" data-bs-target="#news" type="button" role="tab">
+                        Новости ({{ news|length }})
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="searchTabsContent">
+                <!-- Вакансии -->
+                <div class="tab-pane fade show active" id="vacancies" role="tabpanel" aria-labelledby="vacancies-tab">
+                    {% for vacancy in vacancies %}
+                        <div class="card mb-3 vacancy-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">{{ vacancy.title }}</h5>
+                                    <span>
+                                        {% if vacancy.salary_min and vacancy.salary_max %}
+                                            <span class="badge bg-success">{{ vacancy.salary_min }} - {{ vacancy.salary_max }} руб.</span>
+                                        {% elif vacancy.salary_min %}
+                                            <span class="badge bg-success">от {{ vacancy.salary_min }} руб.</span>
+                                        {% elif vacancy.salary_max %}
+                                            <span class="badge bg-success">до {{ vacancy.salary_max }} руб.</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Зарплата не указана</span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <p class="card-text text-muted mb-2">
+                                    <i class="fas fa-building me-1"></i> {{ vacancy.employer.company_name }}
+                                </p>
+                                <p class="card-text text-muted mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i> 
+                                    {% if vacancy.location %}
+                                        {{ vacancy.location.city }}
+                                    {% elif vacancy.is_remote %}
+                                        Удаленная работа
+                                    {% else %}
+                                        Не указано
+                                    {% endif %}
+                                </p>
+                                <p class="mb-3">
+                                    <span class="badge bg-primary">{{ vacancy.get_employment_type_display }}</span>
+                                    <span class="badge bg-info">{{ vacancy.get_experience_required_display }}</span>
+                                    {% if vacancy.is_remote %}
+                                        <span class="badge bg-dark">Удаленная работа</span>
+                                    {% endif %}
+                                </p>
+                                <p class="card-text">{{ vacancy.description|truncatechars:150 }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Опубликовано: {{ vacancy.created_at|date:"d.m.Y" }}</small>
+                                    <a href="{% url 'jobs:vacancy_detail' vacancy.slug %}" class="btn btn-outline-primary">Подробнее</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="alert alert-info" role="alert">
+                            По вашему запросу не найдено вакансий.
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Статьи -->
+                <div class="tab-pane fade" id="articles" role="tabpanel" aria-labelledby="articles-tab">
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        {% for article in articles %}
+                            <div class="col">
+                                <div class="card h-100">
+                                    {% if article.image %}
+                                        <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ article.title }}</h5>
+                                        <p class="card-text text-muted">
+                                            <small>
+                                                <i class="fas fa-folder me-1"></i> {{ article.category.name }}
+                                                <i class="fas fa-calendar-alt ms-2 me-1"></i> {{ article.created_at|date:"d.m.Y" }}
+                                            </small>
+                                        </p>
+                                        <p class="card-text">{{ article.content|truncatechars:150 }}</p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">
+                                            <i class="fas fa-eye me-1"></i> {{ article.views }}
+                                        </small>
+                                        <a href="{% url 'core:article_detail' article.slug %}" class="btn btn-sm btn-outline-primary">Читать далее</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-12">
+                                <div class="alert alert-info" role="alert">
+                                    По вашему запросу не найдено статей.
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Новости -->
+                <div class="tab-pane fade" id="news" role="tabpanel" aria-labelledby="news-tab">
+                    {% for news_item in news %}
+                        <div class="card mb-4 shadow-sm">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    {% if news_item.image %}
+                                        <img src="{{ news_item.image.url }}" class="img-fluid rounded-start h-100 object-fit-cover" alt="{{ news_item.title }}">
+                                    {% else %}
+                                        <div class="bg-light h-100 d-flex align-items-center justify-content-center">
+                                            <i class="fas fa-newspaper fa-3x text-muted"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ news_item.title }}</h5>
+                                        <p class="card-text text-muted">
+                                            <small>
+                                                <i class="fas fa-calendar-alt me-1"></i> {{ news_item.created_at|date:"d.m.Y" }}
+                                                <i class="fas fa-eye ms-2 me-1"></i> {{ news_item.views }}
+                                            </small>
+                                        </p>
+                                        <p class="card-text">{{ news_item.content|truncatechars:200 }}</p>
+                                        <a href="{% url 'core:news_detail' news_item.slug %}" class="btn btn-sm btn-primary">Читать далее</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="alert alert-info" role="alert">
+                            По вашему запросу не найдено новостей.
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

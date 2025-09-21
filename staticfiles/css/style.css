@@ -1,0 +1,227 @@
+/* Основные стили */
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: #1e3a8a;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #0f172a;
+}
+
+/* Карточки */
+.hover-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* Пагинация */
+.pagination .page-item.active .page-link {
+    background-color: #1e3a8a;
+    border-color: #1e3a8a;
+}
+
+.pagination .page-link {
+    color: #1e3a8a;
+}
+
+/* Кнопки */
+.btn {
+    border-radius: 0.25rem;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background-color: #1e3a8a;
+    border-color: #1e3a8a;
+}
+
+.btn-primary:hover {
+    background-color: #0f172a;
+    border-color: #0f172a;
+}
+
+.btn-outline-primary {
+    color: #1e3a8a;
+    border-color: #1e3a8a;
+}
+
+.btn-outline-primary:hover {
+    background-color: #1e3a8a;
+    border-color: #1e3a8a;
+    color: white;
+}
+
+/* Формы */
+.form-control:focus {
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 0.25rem rgba(30, 58, 138, 0.25);
+}
+
+/* Навигация */
+.navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-dark {
+    background-color: #1e3a8a !important;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+/* Секции */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: linear-gradient(to right, #1e3a8a, #0f172a);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+.bg-primary {
+    background-color: #1e3a8a !important;
+}
+
+/* Иконки */
+.fa-3x {
+    transition: transform 0.3s;
+}
+
+.hover-card:hover .fa-3x {
+    transform: scale(1.1);
+}
+
+.text-primary {
+    color: #1e3a8a !important;
+}
+
+/* Карточки вакансий */
+.vacancy-card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.vacancy-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+/* Профили */
+.profile-header {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Детали вакансии */
+.vacancy-details {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .hero-section {
+        text-align: center;
+    }
+}
+
+/* Стиль для слабовидящих */
+body.high-contrast {
+    background-color: #000;
+    color: #fff;
+}
+
+body.high-contrast .navbar {
+    background-color: #000 !important;
+    color: #fff;
+}
+
+body.high-contrast .card,
+body.high-contrast .hero-section,
+body.high-contrast .profile-header,
+body.high-contrast .vacancy-details {
+    background-color: #222;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+body.high-contrast a {
+    color: #ffff00;
+}
+
+body.high-contrast .btn-primary {
+    background-color: #ffff00;
+    border-color: #ffff00;
+    color: #000;
+}
+
+body.high-contrast .form-control {
+    background-color: #222;
+    color: #fff;
+    border-color: #444;
+}
+
+/* Увеличенный шрифт */
+body.large-font {
+    font-size: 1.2rem;
+}
+
+body.large-font h1 {
+    font-size: 2.5rem;
+}
+
+body.large-font h2 {
+    font-size: 2.2rem;
+}
+
+body.large-font h3 {
+    font-size: 1.9rem;
+}
+
+body.large-font .navbar {
+    font-size: 1.3rem;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 1s;
+} 

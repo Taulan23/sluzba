@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Новости</h1>
+    
+    <!-- Поиск по новостям -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" action="{% url 'core:news_list' %}">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Поиск новостей" value="{{ request.GET.q }}">
+                    <button class="btn btn-primary" type="submit">Найти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    {% if request.GET.q %}
+        <div class="alert alert-info mb-4">
+            <h5>Результаты поиска по запросу: "{{ request.GET.q }}"</h5>
+        </div>
+    {% endif %}
+    
+    <div class="row">
+        <!-- Список новостей -->
+        <div class="col-lg-8">
+            {% for news_item in news_list %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            {% if news_item.image %}
+                                <img src="{{ news_item.image.url }}" class="img-fluid rounded-start h-100 object-fit-cover" alt="{{ news_item.title }}">
+                            {% else %}
+                                <div class="bg-light h-100 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-newspaper fa-3x text-muted"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ news_item.title }}</h5>
+                                <p class="card-text text-muted">
+                                    <small>
+                                        <i class="fas fa-calendar-alt me-1"></i> {{ news_item.created_at|date:"d.m.Y" }}
+                                        <i class="fas fa-eye ms-2 me-1"></i> {{ news_item.views }}
+                                    </small>
+                                </p>
+                                <div class="card-text news-preview-text">{{ news_item.content|truncatewords_html:30|safe }}</div>
+                                <a href="{% url 'core:news_detail' news_item.slug %}" class="btn btn-sm btn-primary">Читать далее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="alert alert-info" role="alert">
+                    {% if request.GET.q %}
+                        По вашему запросу не найдено новостей.
+                    {% else %}
+                        Новости пока не добавлены.
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <!-- Пагинация -->
+            {% if is_paginated %}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+        
+        <!-- Боковая панель -->
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Архив</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% now "Y" as current_year %}
+                    {% now "m" as current_month %}
+                    
+                    {% for year in current_year|add:"-2"|add:"1"|make_list %}
+                        {% for month in "123456789101112"|make_list %}
+                            {% if year == current_year and month > current_month %}
+                                {# Skip future months #}
+                            {% else %}
+                                <a href="?year={{ year }}&month={{ month }}" class="list-group-item list-group-item-action">
+                                    {{ month }}/{{ year }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Популярные новости</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for popular_news in news_list|dictsortreversed:"views"|slice:":5" %}
+                        <a href="{% url 'core:news_detail' popular_news.slug %}" class="list-group-item list-group-item-action">
+                            {{ popular_news.title }}
+                            <span class="badge bg-primary float-end">{{ popular_news.views }}</span>
+                        </a>
+                    {% empty %}
+                        <div class="list-group-item">Нет новостей</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

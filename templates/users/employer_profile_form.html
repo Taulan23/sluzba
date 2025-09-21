@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Профиль работодателя{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">{% if form.instance.pk %}Редактировать профиль компании{% else %}Создать профиль компании{% endif %}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.company_name.label_tag }}
+                            {{ form.company_name }}
+                            {% if form.company_name.errors %}
+                                <div class="text-danger small">{{ form.company_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.company_logo.label_tag }}
+                            {{ form.company_logo }}
+                            {% if form.company_logo.errors %}
+                                <div class="text-danger small">{{ form.company_logo.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.company_description.label_tag }}
+                            {{ form.company_description }}
+                            {% if form.company_description.errors %}
+                                <div class="text-danger small">{{ form.company_description.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.company_website.label_tag }}
+                            {{ form.company_website }}
+                            {% if form.company_website.errors %}
+                                <div class="text-danger small">{{ form.company_website.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.company_address.label_tag }}
+                            {{ form.company_address }}
+                            {% if form.company_address.errors %}
+                                <div class="text-danger small">{{ form.company_address.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.company_phone.label_tag }}
+                            {{ form.company_phone }}
+                            {% if form.company_phone.errors %}
+                                <div class="text-danger small">{{ form.company_phone.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.company_email.label_tag }}
+                            {{ form.company_email }}
+                            {% if form.company_email.errors %}
+                                <div class="text-danger small">{{ form.company_email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

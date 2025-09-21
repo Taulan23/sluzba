@@ -1,0 +1,637 @@
+/* Custom styles for Django Admin */
+
+/* Variables */
+:root {
+    --primary: #1e3a8a;
+    --primary-dark: #0f172a;
+    --primary-light: #3b82f6;
+    --success: #10b981;
+    --info: #3b82f6;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --light: #f8f9fa;
+    --dark: #1e293b;
+    --gray: #64748b;
+    --gray-light: #e2e8f0;
+    --gray-dark: #334155;
+    --white: #ffffff;
+    --black: #000000;
+    --body-bg: #f1f5f9;
+    --body-fg: #334155;
+    --font-primary: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+/* Общие стили */
+body {
+    font-family: var(--font-primary);
+    background-color: var(--body-bg);
+    color: var(--body-fg);
+    line-height: 1.5;
+}
+
+a:link, a:visited {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover, a:focus {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* Верхняя панель */
+#header {
+    background: var(--primary);
+    color: var(--white);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    height: auto;
+    padding: 15px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#branding h1 {
+    color: var(--white);
+    font-weight: 500;
+    font-size: 1.25rem;
+    margin: 0;
+    padding: 0;
+}
+
+#branding h1 a:link, #branding h1 a:visited {
+    color: var(--white);
+}
+
+#user-tools {
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: normal;
+}
+
+/* Боковое меню */
+#nav-sidebar {
+    background-color: var(--white);
+    padding-top: 20px;
+    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.module caption {
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.875rem;
+    padding: 10px 15px;
+    border-radius: 4px 4px 0 0;
+    font-weight: 500;
+}
+
+.module h2 {
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.875rem;
+    padding: 10px 15px;
+    border-radius: 4px 4px 0 0;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+/* Хлебные крошки */
+div.breadcrumbs {
+    background: var(--primary-dark);
+    padding: 12px 40px;
+    color: var(--white);
+    font-size: 0.875rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+div.breadcrumbs a {
+    color: var(--gray-light);
+    text-decoration: none;
+}
+
+div.breadcrumbs a:hover, div.breadcrumbs a:focus {
+    color: var(--white);
+}
+
+/* Кнопки */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--primary);
+    color: var(--white);
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover,
+.button:focus, input[type=submit]:focus, input[type=button]:focus,
+.submit-row input:hover, .submit-row input:focus {
+    background: var(--primary-dark);
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    background: var(--primary-dark);
+    font-weight: 500;
+}
+
+.button.default:hover, input[type=submit].default:hover,
+.button.default:focus, input[type=submit].default:focus,
+.submit-row input.default:hover, .submit-row input.default:focus {
+    background: var(--primary-light);
+}
+
+/* Таблицы */
+table {
+    border-collapse: collapse;
+    border: 1px solid var(--gray-light);
+    width: 100%;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+td, th {
+    font-size: 0.875rem;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+thead th {
+    background: var(--light);
+    color: var(--gray-dark);
+    font-weight: 500;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: var(--light);
+}
+
+tbody tr:hover {
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* Инструменты объекта */
+.object-tools {
+    margin-top: 15px;
+}
+
+.object-tools a {
+    background: var(--primary);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.object-tools a:hover, .object-tools a:focus {
+    background: var(--primary-dark);
+}
+
+/* Формы */
+form .form-row {
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+.form-row label {
+    font-size: 0.875rem;
+    color: var(--gray-dark);
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type=text], input[type=password], input[type=email], input[type=url], 
+input[type=number], textarea, select, .vTextField {
+    padding: 8px 12px;
+    border: 1px solid var(--gray-light);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: var(--body-fg);
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, 
+input[type=url]:focus, input[type=number]:focus, textarea:focus, select:focus, 
+.vTextField:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.submit-row {
+    padding: 15px 0;
+    margin: 20px 0 0 0;
+    background: none;
+    border-top: 1px solid var(--gray-light);
+    text-align: right;
+}
+
+/* Сообщения */
+ul.messagelist {
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+ul.messagelist li {
+    padding: 12px 20px;
+    margin: 0 0 10px 0;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+ul.messagelist li.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+ul.messagelist li.warning {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+ul.messagelist li.error {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+/* Админ-дашборд */
+.dashboard .module {
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: var(--white);
+}
+
+.dashboard .module h2, 
+.dashboard .module caption {
+    padding: 12px 15px;
+    font-size: 1rem;
+}
+
+.dashboard .module table th {
+    background: var(--primary);
+    color: var(--white);
+    font-weight: 500;
+}
+
+/* Действия и фильтры */
+.actions {
+    padding: 10px;
+    background: var(--light);
+    border-bottom: 1px solid var(--gray-light);
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.actions label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.actions select {
+    max-width: 200px;
+    display: inline-block;
+}
+
+.actions .button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+}
+
+/* Фильтр даты */
+.calendarbox, .clockbox {
+    background: var(--white);
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    border: 1px solid var(--gray-light);
+}
+
+.calendar caption {
+    background: var(--primary);
+    color: var(--white);
+    padding: 5px 10px;
+    border-radius: 3px 3px 0 0;
+}
+
+/* Responsive styling */
+@media (max-width: 1024px) {
+    #header {
+        padding: 15px 20px;
+    }
+    
+    div.breadcrumbs {
+        padding: 12px 20px;
+    }
+    
+    #nav-sidebar {
+        width: 220px;
+    }
+}
+
+@media (max-width: 767px) {
+    #header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    #user-tools {
+        margin-top: 10px;
+    }
+    
+    .form-row {
+        padding: 8px 0;
+    }
+    
+    input[type=text], input[type=password], input[type=email], input[type=url], 
+    input[type=number], textarea, select, .vTextField {
+        max-width: 100%;
+    }
+}
+
+/* Селекторы стилей */
+.selector {
+    display: flex;
+    background: var(--white);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.selector-available h2, .selector-chosen h2 {
+    font-size: 0.875rem;
+    padding: 10px 15px;
+    border-radius: 4px 4px 0 0;
+    margin: 0;
+}
+
+.selector select {
+    height: 200px;
+    width: 100%;
+    border: 1px solid var(--gray-light);
+}
+
+.selector-available, .selector-chosen {
+    width: 45%;
+}
+
+.selector-chooser {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.selector-add, .selector-remove {
+    background: var(--primary);
+    color: var(--white);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selector-add:hover, .selector-remove:hover {
+    background: var(--primary-dark);
+}
+
+/* Инлайн-формы */
+.inline-group {
+    border: 1px solid var(--gray-light);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    background-color: var(--white);
+}
+
+.inline-group .inline-related {
+    border-bottom: 1px solid var(--gray-light);
+    padding: 0;
+}
+
+.inline-group .inline-related h3 {
+    background: var(--light);
+    padding: 10px 15px;
+    font-size: 0.875rem;
+    margin: 0;
+    border-top: 1px solid var(--gray-light);
+}
+
+.inline-group .add-row {
+    background: var(--light);
+    padding: 10px 15px;
+}
+
+.dark-mode .inline-group .add-row {
+    background: var(--dark);
+}
+
+/* Темная тема */
+.dark-mode {
+    --body-bg: #0f172a;
+    --body-fg: #e2e8f0;
+    --light: #1e293b;
+    --gray-light: #334155;
+    --white: #1e293b;
+}
+
+.dark-mode table, .dark-mode .form-row {
+    background-color: var(--dark);
+}
+
+.dark-mode input[type=text], .dark-mode input[type=password], 
+.dark-mode input[type=email], .dark-mode input[type=url], 
+.dark-mode input[type=number], .dark-mode textarea, 
+.dark-mode select, .dark-mode .vTextField {
+    background-color: var(--gray-dark);
+    color: var(--light);
+    border-color: var(--gray);
+}
+
+.dark-mode #nav-sidebar {
+    background-color: var(--dark);
+}
+
+.dark-mode tbody tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode tbody tr:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.dark-mode .dashboard .module {
+    background-color: var(--dark);
+}
+
+.dark-mode .dashboard .module table th {
+    background-color: var(--primary);
+}
+
+.dark-mode div.breadcrumbs {
+    background-color: var(--gray-dark);
+}
+
+.dark-mode a:link, .dark-mode a:visited {
+    color: var(--primary-light);
+}
+
+.dark-mode a:hover, .dark-mode a:focus {
+    color: var(--info);
+}
+
+/* Переключатель темы */
+.theme-toggle {
+    display: inline-block;
+    margin-left: 15px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.theme-toggle input {
+    display: none;
+}
+
+.theme-toggle__toggle {
+    background: var(--gray-light);
+    display: inline-block;
+    height: 20px;
+    position: relative;
+    transition: 0.4s;
+    width: 40px;
+    border-radius: 10px;
+    vertical-align: middle;
+}
+
+.theme-toggle__toggle:before {
+    background: var(--white);
+    border-radius: 50%;
+    bottom: 2px;
+    content: "";
+    height: 16px;
+    left: 2px;
+    position: absolute;
+    transition: 0.4s;
+    width: 16px;
+}
+
+.theme-toggle input:checked + .theme-toggle__toggle {
+    background: var(--primary);
+}
+
+.theme-toggle input:checked + .theme-toggle__toggle:before {
+    transform: translateX(20px);
+}
+
+/* Редактор кода */
+.CodeMirror {
+    border: 1px solid var(--gray-light);
+    border-radius: 4px;
+    height: auto !important;
+}
+
+/* CKEditor */
+.django-ckeditor-widget {
+    width: 100% !important;
+    max-width: 800px;
+}
+
+/* Media Library */
+.media-library {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.media-item {
+    background: var(--white);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.media-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.media-thumbnail {
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+}
+
+.media-info {
+    padding: 8px;
+    font-size: 0.75rem;
+    color: var(--body-fg);
+}
+
+.media-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* --- ДОБАВЛЕНО: читаемость текста в админке --- */
+.module {
+    color: var(--body-fg) !important;
+    background: var(--light) !important;
+}
+
+.module a {
+    color: var(--primary-dark) !important;
+    font-weight: 500;
+}
+
+.module a:hover {
+    color: var(--primary) !important;
+    text-decoration: underline;
+}
+
+.module th, .module td {
+    color: var(--body-fg) !important;
+    background: var(--light) !important;
+}
+
+.object-tools a {
+    color: var(--white) !important;
+}
+
+/* Для темной темы */
+.dark-mode .module, .dark-mode .module th, .dark-mode .module td {
+    color: var(--body-fg) !important;
+    background: var(--dark) !important;
+}
+
+.dark-mode .module a {
+    color: var(--primary-light) !important;
+}
+
+.dark-mode .module a:hover {
+    color: var(--info) !important;
+} 

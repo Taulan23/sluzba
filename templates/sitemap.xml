@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- Главная страница -->
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'core:home' %}</loc>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Основные разделы -->
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'jobs:vacancy_list' %}</loc>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'core:article_list' %}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'core:news_list' %}</loc>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'core:contact' %}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'core:faq' %}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Регистрация/авторизация -->
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'users:register' %}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'users:login' %}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Категории вакансий -->
+    {% for category in categories %}
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'jobs:category' category.slug %}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    {% endfor %}
+    
+    <!-- Вакансии -->
+    {% for vacancy in vacancies %}
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'jobs:vacancy_detail' vacancy.slug %}</loc>
+        <lastmod>{{ vacancy.updated_at|date:"Y-m-d" }}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    {% endfor %}
+    
+    <!-- Статьи -->
+    {% for article in articles %}
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'core:article_detail' article.slug %}</loc>
+        <lastmod>{{ article.updated_at|date:"Y-m-d" }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    {% endfor %}
+    
+    <!-- Новости -->
+    {% for news in all_news %}
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'core:news_detail' news.slug %}</loc>
+        <lastmod>{{ news.updated_at|date:"Y-m-d" }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    {% endfor %}
+    
+    <!-- Страницы -->
+    {% for page in pages %}
+    <url>
+        <loc>{{ request.scheme }}://{{ request.get_host }}{% url 'core:page' page.slug %}</loc>
+        <lastmod>{{ page.updated_at|date:"Y-m-d" }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    {% endfor %}
+</urlset> 

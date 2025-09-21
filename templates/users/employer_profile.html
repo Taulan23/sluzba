@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Профиль работодателя{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    {% if profile.company_logo %}
+                        <img src="{{ profile.company_logo.url }}" class="img-fluid rounded mb-3" alt="Логотип компании" style="max-height: 150px;">
+                    {% else %}
+                        <div class="bg-secondary text-white rounded mb-3" style="height: 150px; display: flex; align-items: center; justify-content: center;">Нет логотипа</div>
+                    {% endif %}
+                    <h3 class="card-title">{{ profile.company_name }}</h3>
+                    <p class="card-text">{{ profile.company_description }}</p>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">Контакты</div>
+                <div class="card-body">
+                    {% if profile.company_website %}
+                        <p><i class="fas fa-globe"></i> <a href="{{ profile.company_website }}" target="_blank">{{ profile.company_website }}</a></p>
+                    {% endif %}
+                    {% if profile.company_address %}
+                        <p><i class="fas fa-map-marker-alt"></i> {{ profile.company_address }}</p>
+                    {% endif %}
+                    {% if profile.company_phone %}
+                        <p><i class="fas fa-phone"></i> {{ profile.company_phone }}</p>
+                    {% endif %}
+                    {% if profile.company_email %}
+                        <p><i class="fas fa-envelope"></i> {{ profile.company_email }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">Вакансии компании</div>
+                <div class="card-body">
+                    {% if vacancies %}
+                        <ul class="list-group">
+                            {% for vacancy in vacancies %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'jobs:vacancy_detail' vacancy.slug %}">{{ vacancy.title }}</a>
+                                    <span class="badge bg-primary">{{ vacancy.get_status_display }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Вакансии не найдены.</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% if is_owner and applications %}
+            <div class="card mb-4">
+                <div class="card-header">Заявки на вакансии</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for application in applications %}
+                            <li class="list-group-item">
+                                <strong>{{ application.job_seeker.user.get_full_name|default:application.job_seeker.user.username }}</strong> — <a href="{% url 'jobs:vacancy_detail' application.vacancy.slug %}">{{ application.vacancy.title }}</a>
+                                <span class="badge bg-secondary float-end">{{ application.get_status_display }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

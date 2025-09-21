@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Профиль соискателя{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">{% if form.instance.pk %}Редактировать профиль{% else %}Создать профиль{% endif %}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.photo.label_tag }}
+                            {{ form.photo }}
+                            {% if form.photo.errors %}
+                                <div class="text-danger small">{{ form.photo.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.birth_date.label_tag }}
+                            {{ form.birth_date }}
+                            {% if form.birth_date.errors %}
+                                <div class="text-danger small">{{ form.birth_date.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.phone_number.label_tag }}
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}
+                                <div class="text-danger small">{{ form.phone_number.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.education.label_tag }}
+                            {{ form.education }}
+                            {% if form.education.errors %}
+                                <div class="text-danger small">{{ form.education.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.skills.label_tag }}
+                            {{ form.skills }}
+                            {% if form.skills.errors %}
+                                <div class="text-danger small">{{ form.skills.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.experience.label_tag }}
+                            {{ form.experience }}
+                            {% if form.experience.errors %}
+                                <div class="text-danger small">{{ form.experience.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.resume_file.label_tag }}
+                            {{ form.resume_file }}
+                            {% if form.resume_file.errors %}
+                                <div class="text-danger small">{{ form.resume_file.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

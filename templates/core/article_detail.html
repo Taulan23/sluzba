@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card shadow mb-5">
+                {% if article.image %}
+                    <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}" style="max-height: 450px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body p-4">
+                    <h1 class="card-title mb-3 text-primary">{{ article.title }}</h1>
+                    <div class="text-muted mb-4 d-flex flex-wrap">
+                        <span class="me-3 mb-2"><i class="fas fa-calendar-alt me-1"></i> Опубликовано: {{ article.created_at|date:"d.m.Y H:i" }}</span>
+                        <span class="me-3 mb-2"><i class="fas fa-eye me-1"></i> Просмотров: {{ article.views }}</span>
+                        {% if article.author %}
+                            <span class="me-3 mb-2"><i class="fas fa-user me-1"></i> Автор: {{ article.author.get_full_name|default:article.author.username }}</span>
+                        {% endif %}
+                        {% if article.category %}
+                            <span class="mb-2"><i class="fas fa-folder me-1"></i> Категория: <a href="{% url 'core:article_category' article.category.slug %}" class="text-decoration-none">{{ article.category.name }}</a></span>
+                        {% endif %}
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="article-content mt-4">
+                        {{ article.content|safe }}
+                    </div>
+
+                    {% if article.tags.exists %}
+                    <div class="mt-4 pt-3 border-top">
+                        <div class="d-flex flex-wrap">
+                            <strong class="me-2"><i class="fas fa-tags me-1"></i> Теги:</strong>
+                            {% for tag in article.tags.all %}
+                                <a href="{% url 'core:article_tag' tag.slug %}" class="badge bg-primary bg-opacity-10 text-primary text-decoration-none me-2 mb-2 px-3 py-2 rounded-pill">{{ tag.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-white border-top py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'core:article_list' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-1"></i> К списку статей
+                        </a>
+                        <div class="share-buttons">
+                            <span class="me-2">Поделиться:</span>
+                            <a href="https://vk.com/share.php?url={{ request.build_absolute_uri }}" target="_blank" class="btn btn-sm btn-outline-secondary me-1" title="Поделиться ВКонтакте">
+                                <i class="fab fa-vk"></i>
+                            </a>
+                            <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ article.title }}" target="_blank" class="btn btn-sm btn-outline-info" title="Поделиться в Telegram">
+                                <i class="fab fa-telegram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Похожие статьи (если есть) -->
+            {% if related_articles %}
+            <div class="related-articles mt-5">
+                <h3 class="mb-4 border-bottom pb-2">Похожие статьи</h3>
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    {% for related_article in related_articles %}
+                        <div class="col">
+                            <div class="card h-100 shadow-sm hover-card">
+                                {% if related_article.image %}
+                                    <img src="{{ related_article.image.url }}" class="card-img-top" alt="{{ related_article.title }}" style="height: 200px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="{% url 'core:article_detail' related_article.slug %}" class="text-decoration-none text-dark stretched-link">{{ related_article.title }}</a></h5>
+                                    <p class="card-text text-muted"><small><i class="fas fa-calendar-alt me-1"></i> {{ related_article.created_at|date:"d.m.Y" }}</small></p>
+                                    <div class="card-text news-preview-text">{{ related_article.content|truncatewords_html:15|safe }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Стили для контента статьи */
+    .article-content {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: #333;
+    }
+    
+    .article-content h2 {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+        color: #2c3e50;
+    }
+    
+    .article-content h3 {
+        margin-top: 1.3rem;
+        margin-bottom: 0.8rem;
+        font-size: 1.5rem;
+        color: #34495e;
+    }
+    
+    .article-content p {
+        margin-bottom: 1.2rem;
+    }
+    
+    .article-content ul, .article-content ol {
+        margin-bottom: 1.2rem;
+        padding-left: 1.5rem;
+    }
+    
+    .article-content blockquote {
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        border-left: 4px solid #3498db;
+        background-color: #f8f9fa;
+        font-style: italic;
+    }
+    
+    .article-content img {
+        max-width: 100%;
+        height: auto;
+        margin: 1.5rem 0;
+        border-radius: 4px;
+    }
+    
+    .article-content a {
+        color: #3498db;
+        text-decoration: none;
+    }
+    
+    .article-content a:hover {
+        text-decoration: underline;
+    }
+    
+    .article-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+    }
+    
+    .article-content table th, .article-content table td {
+        padding: 0.75rem;
+        border: 1px solid #dee2e6;
+    }
+    
+    .article-content table th {
+        background-color: #f8f9fa;
+    }
+    
+    .article-content pre, .article-content code {
+        font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        padding: 0.2rem 0.4rem;
+        font-size: 0.9rem;
+        background-color: #f8f9fa;
+        border-radius: 3px;
+    }
+    
+    .article-content pre {
+        padding: 1rem;
+        margin: 1.5rem 0;
+        overflow-x: auto;
+    }
+    
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+</style>
+{% endblock %} 

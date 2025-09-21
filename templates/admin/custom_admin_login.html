@@ -1,0 +1,123 @@
+{% extends "admin/login.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    body {
+        background-color: #eaeff5;
+        font-family: 'Roboto', sans-serif;
+    }
+    
+    .login {
+        margin: 6em auto;
+        width: 25em;
+        padding: 2em;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);
+    }
+    
+    .login #header {
+        padding: 15px 0;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .login #branding h1 {
+        color: #1e3a8a;
+        font-size: 24px;
+        font-weight: 600;
+    }
+    
+    input[type=text], input[type=password] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+        font-size: 15px;
+    }
+    
+    input[type=text]:focus, input[type=password]:focus {
+        border-color: #1e3a8a;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+    }
+    
+    .submit-row {
+        padding: 20px 0 0 0;
+    }
+    
+    .submit-row input[type=submit] {
+        width: 100%;
+        background-color: #1e3a8a;
+        color: #fff;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+    
+    .submit-row input[type=submit]:hover {
+        background-color: #0f172a;
+    }
+    
+    .errornote {
+        color: #e74c3c;
+        padding: 10px;
+        margin-bottom: 15px;
+        background-color: #fae5e5;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    
+    .back-to-site {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .back-to-site a {
+        color: #1e3a8a;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    
+    .back-to-site a:hover {
+        text-decoration: underline;
+    }
+    
+    .help-text {
+        color: #666;
+        font-size: 13px;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <i class="fas fa-shield-alt" style="margin-right: 10px;"></i>
+    {% trans 'Вход в панель администратора' %}
+</h1>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <p class="login-description">
+        {% trans 'Для входа в административную панель введите имя пользователя и пароль с правами администратора.' %}
+    </p>
+    
+    {{ block.super }}
+    
+    <div class="back-to-site">
+        <a href="{% url 'core:home' %}">
+            <i class="fas fa-arrow-left" style="margin-right: 5px;"></i>
+            {% trans 'Вернуться на сайт' %}
+        </a>
+    </div>
+</div>
+{% endblock %} 

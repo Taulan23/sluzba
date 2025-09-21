@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Служба занятости населения - Главная{% endblock %}
+
+{% block content %}
+<!-- Банер -->
+<section class="hero-section bg-primary text-white rounded p-5 mb-5">
+    <div class="row align-items-center">
+        <div class="col-md-7">
+            <h1 class="display-4 mb-3">Найдите работу своей мечты</h1>
+            <p class="lead mb-4">Служба занятости населения поможет вам найти подходящую работу или сотрудников для вашей компании.</p>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{% url 'jobs:vacancy_list' %}" class="btn btn-light btn-lg">Найти вакансию</a>
+                <a href="{% url 'users:register' %}" class="btn btn-outline-light btn-lg">Создать резюме</a>
+            </div>
+        </div>
+        <div class="col-md-5 text-center">
+            <img src="https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Поиск работы" class="img-fluid rounded shadow-lg">
+        </div>
+    </div>
+</section>
+
+<!-- Категории вакансий -->
+<section class="mt-5 mb-5">
+    <h2 class="text-center mb-4">Категории вакансий</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for category in job_categories %}
+            <div class="col">
+                <div class="card h-100 shadow-sm hover-card">
+                    <div class="card-body text-center">
+                        <i class="fas {% if category.icon %}{{ category.icon }}{% else %}fa-briefcase{% endif %} fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        <p class="card-text small text-muted">{{ category.description|truncatechars:60 }}</p>
+                        <a href="{% url 'jobs:category' category.slug %}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center">
+                <p>Категории пока не добавлены.</p>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+        <a href="{% url 'jobs:vacancy_list' %}" class="btn btn-primary">Все категории</a>
+    </div>
+</section>
+
+<!-- Последние вакансии -->
+<section class="mt-5 mb-5">
+    <h2 class="text-center mb-4">Новые вакансии</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for vacancy in latest_vacancies %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ vacancy.title }}</h5>
+                        <p class="card-text text-muted mb-2">
+                            <i class="fas fa-building me-1"></i> {{ vacancy.employer.company_name }}
+                        </p>
+                        <p class="card-text text-muted mb-2">
+                            <i class="fas fa-map-marker-alt me-1"></i> 
+                            {% if vacancy.location %}
+                                {{ vacancy.location.city }}
+                            {% elif vacancy.is_remote %}
+                                Удаленная работа
+                            {% else %}
+                                Не указано
+                            {% endif %}
+                        </p>
+                        <p class="card-text mb-3">
+                            {% if vacancy.salary_min and vacancy.salary_max %}
+                                <span class="badge bg-success">{{ vacancy.salary_min }} - {{ vacancy.salary_max }} руб.</span>
+                            {% elif vacancy.salary_min %}
+                                <span class="badge bg-success">от {{ vacancy.salary_min }} руб.</span>
+                            {% elif vacancy.salary_max %}
+                                <span class="badge bg-success">до {{ vacancy.salary_max }} руб.</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Зарплата не указана</span>
+                            {% endif %}
+                            <span class="badge bg-primary">{{ vacancy.get_employment_type_display }}</span>
+                        </p>
+                        <a href="{% url 'jobs:vacancy_detail' vacancy.slug %}" class="btn btn-outline-primary stretched-link">Подробнее</a>
+                    </div>
+                    <div class="card-footer text-muted small">
+                        <i class="fas fa-clock me-1"></i> {{ vacancy.created_at|date:"d.m.Y" }}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center">
+                <p>Вакансии пока не добавлены.</p>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+        <a href="{% url 'jobs:vacancy_list' %}" class="btn btn-primary">Все вакансии</a>
+    </div>
+</section>
+
+<!-- Для работодателей -->
+<section class="bg-light rounded p-5 my-5">
+    <div class="row align-items-center">
+        <div class="col-md-6 order-md-2">
+            <h2 class="mb-4">Для работодателей</h2>
+            <p class="lead">Разместите вакансию и найдите лучших сотрудников для вашей компании.</p>
+            <ul class="list-unstyled mb-4">
+                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Быстрый поиск кандидатов</li>
+                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Удобное управление откликами</li>
+                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Доступ к базе резюме</li>
+                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Бесплатная публикация вакансий</li>
+            </ul>
+            <a href="{% url 'users:register' %}" class="btn btn-primary">Разместить вакансию</a>
+        </div>
+        <div class="col-md-6 order-md-1 text-center">
+            <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Для работодателей" class="img-fluid rounded shadow-lg">
+        </div>
+    </div>
+</section>
+
+<!-- Последние статьи и новости -->
+<section class="my-5">
+    <div class="row">
+        <!-- Статьи -->
+        <div class="col-md-6">
+            <h2 class="mb-4">Полезные статьи</h2>
+            <div class="list-group">
+                {% for article in latest_articles %}
+                    <a href="{% url 'core:article_detail' article.slug %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ article.title }}</h5>
+                            <small>{{ article.created_at|date:"d.m.Y" }}</small>
+                        </div>
+                        <p class="mb-1">{{ article.content|truncatechars:100 }}</p>
+                        <small class="text-muted">{{ article.category.name }}</small>
+                    </a>
+                {% empty %}
+                    <div class="list-group-item">
+                        <p class="mb-0">Статьи пока не добавлены.</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mt-3">
+                <a href="{% url 'core:article_list' %}" class="btn btn-outline-primary">Все статьи</a>
+            </div>
+        </div>
+        
+        <!-- Новости -->
+        <div class="col-md-6">
+            <h2 class="mb-4">Новости</h2>
+            <div class="list-group">
+                {% for news in latest_news %}
+                    <a href="{% url 'core:news_detail' news.slug %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ news.title }}</h5>
+                            <small>{{ news.created_at|date:"d.m.Y" }}</small>
+                        </div>
+                        <p class="mb-1">{{ news.content|truncatechars:100 }}</p>
+                    </a>
+                {% empty %}
+                    <div class="list-group-item">
+                        <p class="mb-0">Новости пока не добавлены.</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mt-3">
+                <a href="{% url 'core:news_list' %}" class="btn btn-outline-primary">Все новости</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

@@ -1,0 +1,525 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+    .admin-dashboard {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .dashboard-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .dashboard-card__header {
+        padding: 15px 20px;
+        background: var(--primary);
+        color: white;
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .dashboard-card__icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .dashboard-card__body {
+        padding: 15px 20px;
+    }
+    
+    .dashboard-card__footer {
+        padding: 10px 20px;
+        background: #f8f9fa;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .dashboard-card__footer a {
+        font-size: 0.875rem;
+    }
+    
+    .dashboard-card__list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .dashboard-card__list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #f3f4f6;
+    }
+    
+    .dashboard-card__list li:last-child {
+        border-bottom: none;
+    }
+    
+    .model-count {
+        font-size: 2.2rem;
+        font-weight: 500;
+        margin: 5px 0 20px;
+        color: var(--primary);
+    }
+    
+    .admin-welcome {
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        padding: 30px;
+        margin-bottom: 30px;
+        border-radius: 8px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .admin-welcome h1 {
+        margin-top: 0;
+        font-weight: 500;
+        font-size: 1.5rem;
+    }
+    
+    .admin-welcome p {
+        max-width: 80%;
+        opacity: 0.9;
+    }
+    
+    .admin-welcome__shape {
+        position: absolute;
+        right: -50px;
+        top: -20px;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+    
+    .admin-welcome__shape--small {
+        right: 70px;
+        top: 50px;
+        width: 100px;
+        height: 100px;
+    }
+    
+    .quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .quick-action {
+        padding: 8px 15px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        color: white;
+        text-decoration: none;
+        transition: background 0.3s;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .quick-action i {
+        margin-right: 5px;
+    }
+    
+    .quick-action:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .stat-card__title {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 10px;
+    }
+    
+    .stat-card__value {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .stat-card__icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+        color: white;
+    }
+    
+    .icon-primary {
+        background: var(--primary);
+    }
+    
+    .icon-success {
+        background: var(--success);
+    }
+    
+    .icon-warning {
+        background: var(--warning);
+    }
+    
+    .icon-info {
+        background: var(--info);
+    }
+    
+    .recent-actions {
+        margin-top: 30px;
+    }
+    
+    .recent-actions h2 {
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin-bottom: 15px;
+        color: var(--gray-dark);
+    }
+    
+    .recent-actions-empty {
+        text-align: center;
+        padding: 20px;
+        color: #6b7280;
+    }
+    
+    /* Адаптивность */
+    @media (max-width: 767px) {
+        .admin-dashboard {
+            grid-template-columns: 1fr;
+        }
+        
+        .stats-row {
+            grid-template-columns: 1fr;
+        }
+        
+        .admin-welcome {
+            padding: 20px;
+        }
+        
+        .admin-welcome__shape {
+            display: none;
+        }
+    }
+    
+    /* Темная тема */
+    .dark-mode .dashboard-card {
+        background: var(--dark);
+    }
+    
+    .dark-mode .dashboard-card__footer {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+    
+    .dark-mode .dashboard-card__list li {
+        border-color: #4a5568;
+    }
+    
+    .dark-mode .stat-card {
+        background: var(--dark);
+    }
+    
+    .dark-mode .admin-welcome {
+        background: linear-gradient(to right, #1a365d, #1e293b);
+    }
+</style>
+{% endblock %}
+
+{% block coltype %}{% endblock %}
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div class="admin-welcome">
+    <div class="admin-welcome__shape"></div>
+    <div class="admin-welcome__shape admin-welcome__shape--small"></div>
+    <h1>{% trans "Добро пожаловать в панель администратора" %}</h1>
+    <p>{% trans "Здесь вы можете управлять всем содержимым сайта службы занятости." %}</p>
+    
+    <div class="quick-actions">
+        {% for app in app_list %}
+            {% for model in app.models %}
+                {% if model.object_name == 'Article' and model.add_url %}
+                    <a href="{{ model.add_url }}" class="quick-action">
+                        <i class="fas fa-edit"></i> {% trans "Добавить статью" %}
+                    </a>
+                {% endif %}
+                {% if model.object_name == 'News' and model.add_url %}
+                    <a href="{{ model.add_url }}" class="quick-action">
+                        <i class="fas fa-newspaper"></i> {% trans "Добавить новость" %}
+                    </a>
+                {% endif %}
+                {% if model.object_name == 'JobVacancy' and model.add_url %}
+                    <a href="{{ model.add_url }}" class="quick-action">
+                        <i class="fas fa-briefcase"></i> {% trans "Добавить вакансию" %}
+                    </a>
+                {% endif %}
+                {% if model.object_name == 'User' and model.add_url %}
+                    <a href="{{ model.add_url }}" class="quick-action">
+                        <i class="fas fa-user-plus"></i> {% trans "Добавить пользователя" %}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="stats-row">
+    <div class="stat-card">
+        <div class="stat-card__icon icon-primary">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-card__title">{% trans "Пользователи" %}</div>
+        <div class="stat-card__value">{{ user_count }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card__icon icon-success">
+            <i class="fas fa-briefcase"></i>
+        </div>
+        <div class="stat-card__title">{% trans "Вакансии" %}</div>
+        <div class="stat-card__value">{{ vacancy_count }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card__icon icon-warning">
+            <i class="fas fa-newspaper"></i>
+        </div>
+        <div class="stat-card__title">{% trans "Статьи и новости" %}</div>
+        <div class="stat-card__value">{{ content_count }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card__icon icon-info">
+            <i class="fas fa-envelope"></i>
+        </div>
+        <div class="stat-card__title">{% trans "Сообщения" %}</div>
+        <div class="stat-card__value">{{ message_count }}</div>
+    </div>
+</div>
+
+<div class="admin-dashboard">
+    <!-- Блок Контент -->
+    <div class="dashboard-card">
+        <div class="dashboard-card__header">
+            <span>{% trans "Управление контентом" %}</span>
+            <div class="dashboard-card__icon">
+                <i class="far fa-newspaper"></i>
+            </div>
+        </div>
+        <div class="dashboard-card__body">
+            <ul class="dashboard-card__list">
+                {% for app in app_list %}
+                    {% for model in app.models %}
+                        {% if model.object_name == 'Article' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Статьи" %}</a> ({{ article_count }})</li>
+                        {% endif %}
+                        {% if model.object_name == 'News' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Новости" %}</a> ({{ news_count }})</li>
+                        {% endif %}
+                        {% if model.object_name == 'ArticleCategory' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Категории статей" %}</a></li>
+                        {% endif %}
+                        {% if model.object_name == 'Tag' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Теги" %}</a></li>
+                        {% endif %}
+                        {% if model.object_name == 'Page' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Страницы" %}</a></li>
+                        {% endif %}
+                        {% if model.object_name == 'FAQ' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "FAQ" %}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="dashboard-card__footer">
+            {% for app in app_list %}
+                {% for model in app.models %}
+                    {% if model.object_name == 'Article' and model.add_url %}
+                        <a href="{{ model.add_url }}" class="addlink">{% trans "Добавить статью" %}</a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Блок Вакансии -->
+    <div class="dashboard-card">
+        <div class="dashboard-card__header">
+            <span>{% trans "Управление вакансиями" %}</span>
+            <div class="dashboard-card__icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+        </div>
+        <div class="dashboard-card__body">
+            <ul class="dashboard-card__list">
+                {% for app in app_list %}
+                    {% for model in app.models %}
+                        {% if model.object_name == 'JobVacancy' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Вакансии" %}</a> ({{ vacancy_count }})</li>
+                        {% endif %}
+                        {% if model.object_name == 'Category' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Категории вакансий" %}</a></li>
+                        {% endif %}
+                        {% if model.object_name == 'Skill' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Навыки" %}</a></li>
+                        {% endif %}
+                        {% if model.object_name == 'JobApplication' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Заявки на вакансии" %}</a></li>
+                        {% endif %}
+                        {% if model.object_name == 'JobLocation' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Местоположения" %}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="dashboard-card__footer">
+            {% for app in app_list %}
+                {% for model in app.models %}
+                    {% if model.object_name == 'JobVacancy' and model.add_url %}
+                        <a href="{{ model.add_url }}" class="addlink">{% trans "Добавить вакансию" %}</a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Блок Пользователи -->
+    <div class="dashboard-card">
+        <div class="dashboard-card__header">
+            <span>{% trans "Управление пользователями" %}</span>
+            <div class="dashboard-card__icon">
+                <i class="fas fa-users"></i>
+            </div>
+        </div>
+        <div class="dashboard-card__body">
+            <ul class="dashboard-card__list">
+                {% for app in app_list %}
+                    {% for model in app.models %}
+                        {% if model.object_name == 'User' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Все пользователи" %}</a> ({{ user_count }})</li>
+                        {% endif %}
+                        {% if model.object_name == 'JobSeekerProfile' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Соискатели" %}</a> ({{ jobseeker_count }})</li>
+                        {% endif %}
+                        {% if model.object_name == 'EmployerProfile' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Работодатели" %}</a> ({{ employer_count }})</li>
+                        {% endif %}
+                        {% if model.object_name == 'Group' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Группы" %}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="dashboard-card__footer">
+            {% for app in app_list %}
+                {% for model in app.models %}
+                    {% if model.object_name == 'User' and model.add_url %}
+                        <a href="{{ model.add_url }}" class="addlink">{% trans "Добавить пользователя" %}</a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Блок Обратная связь -->
+    <div class="dashboard-card">
+        <div class="dashboard-card__header">
+            <span>{% trans "Обратная связь" %}</span>
+            <div class="dashboard-card__icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+        </div>
+        <div class="dashboard-card__body">
+            <ul class="dashboard-card__list">
+                {% for app in app_list %}
+                    {% for model in app.models %}
+                        {% if model.object_name == 'ContactMessage' %}
+                            <li><a href="{{ model.admin_url }}">{% trans "Сообщения обратной связи" %}</a> ({{ message_count }})</li>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="dashboard-card__footer">
+            {% for app in app_list %}
+                {% for model in app.models %}
+                    {% if model.object_name == 'ContactMessage' and model.admin_url %}
+                        <a href="{{ model.admin_url }}?status__exact=new" class="addlink">{% trans "Новые сообщения" %}</a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="recent-actions">
+    <h2>{% trans "Последние действия" %}</h2>
+    {% load log %}
+    {% get_admin_log 10 as admin_log for_user user %}
+    
+    {% if not admin_log %}
+    <div class="recent-actions-empty">
+        {% trans "Нет последних действий" %}
+    </div>
+    {% else %}
+    <ul class="actionlist">
+    {% for entry in admin_log %}
+        <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+            {% if entry.is_deletion or not entry.get_admin_url %}
+                {{ entry.object_repr }}
+            {% else %}
+                <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+            {% endif %}
+            <br/>
+            {% if entry.content_type %}
+                <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+            {% else %}
+                <span class="mini quiet">{% trans "Неизвестный тип" %}</span>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endblock %} 

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}404 - Страница не найдена{% endblock %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <div class="error-page">
+        <h1 class="display-1 fw-bold text-primary">404</h1>
+        <h2 class="mb-4">Страница не найдена</h2>
+        <p class="lead mb-5">К сожалению, запрашиваемая страница не существует или была перемещена.</p>
+        <div>
+            <a href="{% url 'core:home' %}" class="btn btn-primary me-2">На главную</a>
+            <a href="{% url 'jobs:vacancy_list' %}" class="btn btn-outline-primary">Поиск вакансий</a>
+        </div>
+        <div class="mt-5">
+            <p>Возможно, вас заинтересуют следующие разделы:</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{% url 'core:article_list' %}" class="text-decoration-none">
+                    <div class="card mb-3" style="width: 18rem;">
+                        <div class="card-body text-center">
+                            <i class="fas fa-newspaper fa-3x mb-3 text-primary"></i>
+                            <h5 class="card-title">Статьи</h5>
+                            <p class="card-text">Полезные материалы о поиске работы и трудоустройстве</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="{% url 'core:news_list' %}" class="text-decoration-none">
+                    <div class="card mb-3" style="width: 18rem;">
+                        <div class="card-body text-center">
+                            <i class="fas fa-rss fa-3x mb-3 text-primary"></i>
+                            <h5 class="card-title">Новости</h5>
+                            <p class="card-text">Актуальные новости рынка труда</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="{% url 'core:contact' %}" class="text-decoration-none">
+                    <div class="card mb-3" style="width: 18rem;">
+                        <div class="card-body text-center">
+                            <i class="fas fa-phone fa-3x mb-3 text-primary"></i>
+                            <h5 class="card-title">Контакты</h5>
+                            <p class="card-text">Свяжитесь с нами, если у вас возникли вопросы</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

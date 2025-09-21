@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Отклик на вакансию{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Отклик на вакансию: {{ vacancy.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5>Информация о вакансии:</h5>
+                        <p><strong>Компания:</strong> {{ vacancy.employer.company_name }}</p>
+                        <p><strong>Зарплата:</strong> 
+                            {% if vacancy.salary_min and vacancy.salary_max %}
+                                от {{ vacancy.salary_min }} до {{ vacancy.salary_max }} руб.
+                            {% elif vacancy.salary_min %}
+                                от {{ vacancy.salary_min }} руб.
+                            {% elif vacancy.salary_max %}
+                                до {{ vacancy.salary_max }} руб.
+                            {% else %}
+                                Не указана
+                            {% endif %}
+                        </p>
+                        <p><strong>Тип занятости:</strong> {{ vacancy.get_employment_type_display }}</p>
+                        <p><strong>Локация:</strong> 
+                            {% if vacancy.is_remote %}
+                                Удаленная работа
+                            {% else %}
+                                {{ vacancy.location }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="alert alert-info mb-4">
+                            <i class="fas fa-info-circle me-2"></i> Пожалуйста, заполните следующую форму, чтобы откликнуться на вакансию.
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.cover_letter.id_for_label }}" class="form-label">{{ form.cover_letter.label }}</label>
+                            {{ form.cover_letter }}
+                            {% if form.cover_letter.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.cover_letter.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Расскажите о вашем опыте и почему вы подходите на эту позицию.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.resume_file.id_for_label }}" class="form-label">{{ form.resume_file.label }}</label>
+                            {{ form.resume_file }}
+                            {% if form.resume_file.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.resume_file.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Загрузите ваше резюме в формате PDF, DOC или DOCX (не обязательно, если у вас уже есть резюме в профиле).</div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-flex justify-content-end">
+                            <a href="{% url 'jobs:vacancy_detail' vacancy.slug %}" class="btn btn-secondary">Отмена</a>
+                            <button type="submit" class="btn btn-primary">Отправить заявку</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
