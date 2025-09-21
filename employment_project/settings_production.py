@@ -16,6 +16,7 @@ ALLOWED_HOSTS = [
     '.render.com',
     '.onrender.com',
     'sluzba-1.onrender.com',
+    'sluzba-2.onrender.com',
     '.herokuapp.com',
     '.pythonanywhere.com',
     '.vercel.app'
@@ -33,7 +34,8 @@ if os.environ.get('RENDER_EXTERNAL_HOSTNAME'):
 if os.environ.get('RENDER'):
     ALLOWED_HOSTS.extend([
         '.onrender.com',
-        'sluzba-1.onrender.com'
+        'sluzba-1.onrender.com',
+        'sluzba-2.onrender.com'
     ])
 
 # База данных для продакшена
