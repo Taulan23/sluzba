@@ -8,6 +8,10 @@ from .settings import *
 DEBUG = False
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-!_z3=d*ar3a7b2$^%iparfbrj1r37nr4ww(^%p$1hvb&pom&k*')
 
+# Временно включаем DEBUG для отладки
+if os.environ.get('RENDER'):
+    DEBUG = True
+
 # Разрешенные хосты
 ALLOWED_HOSTS = [
     'localhost',
@@ -19,6 +23,13 @@ ALLOWED_HOSTS = [
     '.pythonanywhere.com',
     '.vercel.app'
 ]
+
+# Для Render добавляем все возможные домены
+if os.environ.get('RENDER'):
+    ALLOWED_HOSTS.extend([
+        '*',  # Временно разрешаем все домены для отладки
+        '.onrender.com'
+    ])
 
 # Добавляем домен из переменной окружения
 if os.environ.get('RAILWAY_STATIC_URL'):
@@ -38,6 +49,9 @@ if os.environ.get('RENDER'):
         'sluzba-4.onrender.com',
         'sluzba-5.onrender.com'
     ])
+    
+    # Добавляем все возможные домены для отладки
+    ALLOWED_HOSTS.append('*')
 
 # База данных для продакшена
 if os.environ.get('DATABASE_URL'):
