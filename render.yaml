@@ -11,6 +11,6 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: PYTHON_VERSION
-        value: 3.11.9
+        value: 3.13.5
       - key: RENDER
         value: true

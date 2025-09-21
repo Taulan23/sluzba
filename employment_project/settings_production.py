@@ -15,8 +15,6 @@ ALLOWED_HOSTS = [
     '.railway.app',
     '.render.com',
     '.onrender.com',
-    'sluzba-1.onrender.com',
-    'sluzba-2.onrender.com',
     '.herokuapp.com',
     '.pythonanywhere.com',
     '.vercel.app'
@@ -35,7 +33,10 @@ if os.environ.get('RENDER'):
     ALLOWED_HOSTS.extend([
         '.onrender.com',
         'sluzba-1.onrender.com',
-        'sluzba-2.onrender.com'
+        'sluzba-2.onrender.com',
+        'sluzba-3.onrender.com',
+        'sluzba-4.onrender.com',
+        'sluzba-5.onrender.com'
     ])
 
 # База данных для продакшена
